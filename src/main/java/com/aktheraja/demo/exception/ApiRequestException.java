@@ -1,4 +1,4 @@
-package com.aktheraja.matrix4.exception;
+package com.aktheraja.demo.exception;
 
 public class ApiRequestException extends RuntimeException {
 

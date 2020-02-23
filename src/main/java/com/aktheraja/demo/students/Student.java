@@ -1,8 +1,9 @@
 package com.aktheraja.demo.students;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 public class Student {
+    private final UUID studentId;
     private final String FirstName;
     private final String LastName;
     private final String UserName;
@@ -10,15 +11,27 @@ public class Student {
     private final String City;
     private final String State;
     private final String Zip;
-    private final String PhotoUrl;
+    private String PhotoUrl;
 
     public Student(
-            @JsonProperty("firstName") String firstName,
-            @JsonProperty("lastName") String lastName,
-            @JsonProperty("userName") String userName,
-            String email, @JsonProperty("city") String city,
-            @JsonProperty("state") String state,
-            @JsonProperty("zip") String zip, String photURl) {
+            UUID studentId,
+//            @JsonProperty("firstName")
+           String firstName,
+//            @JsonProperty("lastName")
+            String lastName,
+//            @JsonProperty("userName")
+            String userName,
+//            @JsonProperty("email")
+            String email,
+//            @JsonProperty("city")
+            String city,
+//            @JsonProperty("state")
+            String state,
+//            @JsonProperty("zip")
+            String zip,
+//            @JsonProperty("photoUrl")
+            String photoUrl) {
+        this.studentId = studentId;
         FirstName = firstName;
         LastName = lastName;
         UserName = userName;
@@ -26,7 +39,7 @@ public class Student {
         City = city;
         State = state;
         Zip = zip;
-        PhotoUrl = photURl;
+        PhotoUrl = photoUrl;
     }
 
     public String getFirstName() {
@@ -54,8 +67,8 @@ public class Student {
     }
     public String toString(){
 
-        return   "FirstName: " +FirstName + " LastName: " +LastName + " UserName"+ UserName +
-               " City: "+ City + " State: " +State + " Zip: " + Zip;
+        return  "StudentId" + studentId+" FirstName: " +FirstName + "Email: "+ Email + "LastName: " +LastName + " UserName"+ UserName +
+               " City: "+ City + " State: " +State + " Zip: " + Zip + "PhotoUrl: " + PhotoUrl;
     }
 
     public String getPhotoUrl() {
@@ -64,5 +77,12 @@ public class Student {
 
     public String getEmail() {
         return Email;
+    }
+
+    public UUID getStudentId() {
+        return studentId;
+    }
+    public void setPath(String path){
+        this.PhotoUrl = path;
     }
 }

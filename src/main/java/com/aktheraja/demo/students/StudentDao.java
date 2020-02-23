@@ -1,7 +1,16 @@
 package com.aktheraja.demo.students;
 
+import com.aktheraja.demo.exception.ApiRequestException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 
 @Component
 public class StudentDao {
@@ -11,9 +20,10 @@ public class StudentDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    int insertStudents(Student student) {
+    int insertStudents(UUID studentId,Student student) {
         String sql ="" +
                 "INSERT INTO students (" +
+                "studentId," +
                 "first_name, " +
                 "last_name, " +
                 "username ," +
@@ -22,9 +32,10 @@ public class StudentDao {
                 "state ," +
                 "zip ," +
                 "photo) " +
-                "VALUES (?,?,?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?,?,?,?)";
       return  jdbcTemplate.update(
                 sql,
+                studentId,
                 student.getFirstName(),
                 student.getLastName(),
                 student.getUserName(),
@@ -43,4 +54,19 @@ public class StudentDao {
                 ((resultSet, i) -> resultSet.getBoolean(1))
         );
     }
+
+    void savePhotoImage(Student student,MultipartFile imageFile) {
+        Path currentPath = Paths.get(".");
+        Path absolutePath = currentPath.toAbsolutePath();
+        student.setPath(absolutePath + "/src/main/resources/static/photo/"+ imageFile.getOriginalFilename());
+        try {
+            byte[] bytes = imageFile.getBytes();
+            Path path = Paths.get(student.getPhotoUrl() );
+            Files.write(path,bytes);
+        }
+        catch (IOException e){
+            throw new  ApiRequestException(e.getMessage() + "photo an not be saved");
+        }
+    }
 }
+
